@@ -1,0 +1,32 @@
+.cart-product {
+
+ /* height: 1000px;
+ width: 90%; */
+ /* box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24); */
+}
+.cart-title{
+ margin: 30px 0 30px 40px;
+ 
+}
+.cart-title p {
+ color: black;
+ font-size: 25px;
+ text-transform: uppercase;
+ font-weight: 400 ;
+}
+.img-cart img{
+ width: 70px;
+ height: 70px;
+}
+.cart-content button {
+ text-align: center;
+ background-color: transparent;
+ border: none;
+ outline: none;
+ text-align: center;
+}
+.input-cart {
+ margin: 0  !important;
+max-width: 60px !important;
+outline: none;
+}
