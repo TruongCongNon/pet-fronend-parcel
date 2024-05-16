@@ -10,7 +10,7 @@ function Header({fullName}) {
         <div class="head">
           <div class="head-title">
             <div class="head-logo">
-              <img src={logoShop} alt="" />
+             <Link to="/"><img src={logoShop} alt="" /></Link> 
             </div>
             <div class="head-search">
               <input type="text" placeholder="Find the best for your pet..." />
@@ -46,7 +46,7 @@ function Header({fullName}) {
             {fullName ? (
                 <>
                   <Link>{fullName}</Link>
-                  <Link to="/profile">Tài khoản của bạn </Link>
+                  <Link to="/profile/detail">Tài khoản của bạn </Link>
                 </>
               ) : (
                 <Link to="./login">Đăng nhập</Link>

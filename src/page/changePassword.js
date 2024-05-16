@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "../components/header";
 import apiService from "../service/apiService";
 import { API_ENDPOINTS } from "../utils/apiRoute";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 function changePassword() {
     const [user, setUser] = useState({});
@@ -54,13 +55,14 @@ function changePassword() {
             <div className="row no-gutters row-bordered row-border-light">
                 <div className="col-md-3 pt-0">
                     <div className="list-group list-group-flush account-settings-links">
-                        <a
+                        {/* <a
                             className="list-group-item list-group-item-action "
                             data-toggle="list"
                             href="#account-general"
                         >
                             General
-                        </a>
+                        </a> */}
+                        <Link  className="list-group-item list-group-item-action " to="/profile/detail">General</Link>
                         <a
                             className="list-group-item list-group-item-action active"
                             data-toggle="list"
