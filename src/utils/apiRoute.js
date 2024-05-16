@@ -8,8 +8,9 @@ export const API_ENDPOINTS = {
     REGISTER: `${API_BASE_URL}/auth/sign-up`,
     OTP: `${API_BASE_URL}/auth/send-otp`,
     OTP_VERIFY: `${API_BASE_URL}/auth/verified-otp`,
+    CHANGE_PASSWORD: `${API_BASE_URL}/auth/change-password`
   },
-  USER:{
+  USER: {
     BASE: "/user",
     GET_CURRENT_USER: `${API_BASE_URL}/user/get-user-token`
   },

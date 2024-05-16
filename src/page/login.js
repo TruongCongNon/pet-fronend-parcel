@@ -42,13 +42,18 @@ function Login() {
       });
 
       setLoading(false);
-      const { access_token } = response.data;
-      if (access_token) {
-        alert("Login successfullyl");
-        localStorage.setItem("token",access_token);
-        history.push("/")
-        // setAuthToken(token);
+      if (response.data.status >= 299) {
+        alert(response.data.message);
+      } else {
+        const { access_token } = response.data;
+        if (access_token) {
+          alert("Login successfullyl");
+          localStorage.setItem("token", access_token);
+          history.push("/")
+          // setAuthToken(token);
+        }
       }
+
       // if (role === "ADMIN" && token) {
       //   alert("Login successfully");
       //   setAuthToken(token);
