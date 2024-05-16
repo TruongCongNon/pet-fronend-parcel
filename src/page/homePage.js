@@ -35,7 +35,7 @@ function HomePage() {
 
     getUserData();
     getProductData();
-  }, []);
+  });
 
   const getUserData = async () => {
     const token = localStorage.getItem("token");
@@ -136,7 +136,7 @@ function HomePage() {
                     <p class="card-sub-title">Xuất xứ:{product.origin}</p>
                     <p class="card-sub-title">Tuổi:{product.age}</p>
                     <p class="card-sub-title mt-1">Giới tính:{product.gender == "MALE" ? "Giống đực" : "Giống cái"}</p>
-                   
+
                     <div class="btn-cart-sale">
                       <a href="./chi-tiet-san-pham.html">
                         <button class="card-btn">Mua ngay</button>
