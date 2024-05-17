@@ -3,7 +3,7 @@ import Header from "../components/header";
 import apiService from "../service/apiService";
 import { API_ENDPOINTS } from "../utils/apiRoute";
 
-function changePassword() {
+function achangePassword() {
     const [user, setUser] = useState({});
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
@@ -29,7 +29,8 @@ function changePassword() {
             oldPassword: oldPassword
         }
         console.log(newPassword);
-        console.log(oldPassword); await hashSync(useṛ.password, 10);
+        console.log(oldPassword); 
+        await hashSync(user.password, 10);
         console.log(repeatPassword);
 
         if (newPassword != repeatPassword) { alert("please repeat new password!"); } else {
@@ -68,6 +69,7 @@ function changePassword() {
                         >
                             Change password
                         </a>
+                     
                         <a
                             className="list-group-item list-group-item-action"
                             data-toggle="list"

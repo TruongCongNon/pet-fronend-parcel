@@ -3,6 +3,7 @@ import "../styles/pages/profile.user.css";
 import Header from "../components/header";
 import apiService from "../service/apiService";
 import { API_ENDPOINTS } from "../utils/apiRoute";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 function ProfileDetailPage() {
   const [user, setUser] = useState("");
@@ -75,13 +76,13 @@ function ProfileDetailPage() {
               >
                 General
               </a>
-              <a
+              <Link
                 className="list-group-item list-group-item-action"
                 data-toggle="list"
-                href="#account-change-password"
+                to ="/profile/change-password"
               >
                 Change password
-              </a>
+              </Link>
               <a
                 className="list-group-item list-group-item-action"
                 data-toggle="list"

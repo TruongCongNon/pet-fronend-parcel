@@ -46,7 +46,7 @@ function Header({fullName}) {
             {fullName ? (
                 <>
                   <Link>{fullName}</Link>
-                  <Link to="/profile">Tài khoản của bạn </Link>
+                  <Link to="/profile/detail">Tài khoản của bạn </Link>
                 </>
               ) : (
                 <Link to="./login">Đăng nhập</Link>

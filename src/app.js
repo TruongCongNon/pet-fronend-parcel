@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Profiler } from "react";
 import { Route, Switch } from "react-router-dom";
 import HomePage from "./page/homePage";
 import Login from "./page/login";
