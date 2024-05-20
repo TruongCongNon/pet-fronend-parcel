@@ -3,15 +3,30 @@ import "../styles/pages/profile.user.css";
 import Header from "../components/header";
 import apiService from "../service/apiService";
 import { API_ENDPOINTS } from "../utils/apiRoute";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import ProfileNavbar from "../components/profileNavBar";
 
 function ProfileDetailPage() {
+  const history = useHistory();
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [habbit, setHabbit] = useState([]);
   const [dogChecked, setDogChecked] = useState("false");
   const [catChecked, setCatChecked] = useState("false");
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  const onFileChange = event => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
+  };
+
+
+
+
 
   useEffect(() => {
     const getUserData = async () => {
@@ -21,13 +36,26 @@ function ProfileDetailPage() {
           API_ENDPOINTS.USER.GET_CURRENT_USER
         );
         await setUser(response.data);
+
+        // await setUserName(response.data.userName);
+        // await setFullName(response.data.fullName);
+
         await setEmail(response.data.email);
         await setPhoneNumber(response.data.phoneNumber);
         await setHabbit(response.data.habbit);
+        await setPreviewUrl(response.data.avatar);
       }
     };
-    getUserData();
-  }, []);
+    const unlisten = history.listen(() => {
+      getUserData();
+    });
+
+    getUserData(); // Chạy ngay lần đầu tiên component được mount
+
+    return () => {
+      unlisten(); // Hủy lắng nghe khi component bị unmount
+    };
+  }, [history]);
 
   const getUserData = async () => {
     const token = localStorage.getItem("token");
@@ -36,6 +64,10 @@ function ProfileDetailPage() {
         API_ENDPOINTS.USER.GET_CURRENT_USER
       );
       await setUser(response.data);
+
+      // await setUserName(response.data.userName);
+      // await setFullName(response.data.fullName);
+
       await setEmail(response.data.email);
       await setPhoneNumber(response.data.phoneNumber);
       await setHabbit(response.data.habbit);
@@ -44,6 +76,8 @@ function ProfileDetailPage() {
   const updateUser = async (event) => {
     event.preventDefault();
     const data = {
+      // userName,
+      // fullName,
       phoneNumber,
       email,
     };
@@ -60,6 +94,13 @@ function ProfileDetailPage() {
     }
   };
 
+  const handleUploadProfileImg = async (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    const response = await apiService.post(API_ENDPOINTS.UPLOAD.AVATAR, formData).then((data) => { alert("Upload Complete!"); }).catch((error) => { alert("Upload Faild"); console.log(error); })
+  }
+
   return (
     <div>
       <Header fullName={user.fullName} />
@@ -67,54 +108,16 @@ function ProfileDetailPage() {
         <h4 className="font-weight-bold py-3 mb-4">Account settings</h4>
 
         <div className="row no-gutters row-bordered row-border-light">
-          <div className="col-md-3 pt-0">
-            <div className="list-group list-group-flush account-settings-links">
-              <a
-                className="list-group-item list-group-item-action active"
-                data-toggle="list"
-                href="#account-general"
-              >
-                General
-              </a>
-              <Link
-                className="list-group-item list-group-item-action"
-                data-toggle="list"
-                to ="/profile/change-password"
-              >
-                Change password
-              </Link>
-              <a
-                className="list-group-item list-group-item-action"
-                data-toggle="list"
-                href="#account-info"
-              >
-                Info
-              </a>
-              <a
-                className="list-group-item list-group-item-action"
-                data-toggle="list"
-                href="#account-social-links"
-              >
-                Social links
-              </a>
-              <a
-                className="list-group-item list-group-item-action"
-                data-toggle="list"
-                href="#account-connections"
-              >
-                Connections
-              </a>
-              <a
-                className="list-group-item list-group-item-action"
-                data-toggle="list"
-                href="#account-notifications"
-              >
-                Notifications
-              </a>
-            </div>
-          </div>
+          <ProfileNavbar props="General" />
           <div className="col-md-9">
             <form className="p-5" onSubmit={updateUser}>
+              <div class="input-group mb-3">
+                <img class="img-thumbnail rounded-circle image-uploader" style={{ maxWidth: "25%" }} src={previewUrl ? previewUrl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"} />
+                <input type="file" class="form-control" id="inputGroupFile02" onChange={onFileChange} />
+                <label class="input-group-text" for="inputGroupFile02" onClick={handleUploadProfileImg}>Upload</label>
+              </div>
+
+
               <div class="form-row">
                 <div class="form-group col-md-11">
                   <label for="inputEmail4">Email</label>
@@ -128,7 +131,7 @@ function ProfileDetailPage() {
                 </div>
               </div>
               <div class="form-group">
-                <label for="inputAddress">phoneNumber</label>
+                <label for="inputAddress">PhoneNumber</label>
                 <input
                   value={phoneNumber}
                   onChange={(e) => {
@@ -171,17 +174,7 @@ function ProfileDetailPage() {
                 </label>
               </div>
               <div class="form-row mb-3">
-                {/* <div class="form-group col-md-4">
-      <label for="inputState">State</label>
-      <select id="inputState" class="form-control">
-        <option selected>Choose...</option>
-        <option>...</option>
-      </select>
-    </div>
-    <div class="form-group col-md-2">
-      <label for="inputZip">Zip</label>
-      <input c type="text" class="form-control" id="inputZip"/>
-    </div> */}
+
               </div>
 
               <button type="submit" class="btn btn-primary">

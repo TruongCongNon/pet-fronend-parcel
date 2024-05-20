@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import Header from "../components/header";
 import apiService from "../service/apiService";
 import { API_ENDPOINTS } from "../utils/apiRoute";
+import ProfileNavbar from "../components/profileNavBar";
 
-function achangePassword() {
+function changePassword() {
     const [user, setUser] = useState({});
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
@@ -28,10 +29,7 @@ function achangePassword() {
             password: newPassword,
             oldPassword: oldPassword
         }
-        console.log(newPassword);
-        console.log(oldPassword); 
         await hashSync(user.password, 10);
-        console.log(repeatPassword);
 
         if (newPassword != repeatPassword) { alert("please repeat new password!"); } else {
             await apiService.post(API_ENDPOINTS.AUTH.CHANGE_PASSWORD, data).then((data) => {
@@ -53,53 +51,7 @@ function achangePassword() {
             <h4 className="font-weight-bold py-3 mb-4">Account settings</h4>
 
             <div className="row no-gutters row-bordered row-border-light">
-                <div className="col-md-3 pt-0">
-                    <div className="list-group list-group-flush account-settings-links">
-                        <a
-                            className="list-group-item list-group-item-action "
-                            data-toggle="list"
-                            href="#account-general"
-                        >
-                            General
-                        </a>
-                        <a
-                            className="list-group-item list-group-item-action active"
-                            data-toggle="list"
-                            href="#account-change-password"
-                        >
-                            Change password
-                        </a>
-                     
-                        <a
-                            className="list-group-item list-group-item-action"
-                            data-toggle="list"
-                            href="#account-info"
-                        >
-                            Info
-                        </a>
-                        <a
-                            className="list-group-item list-group-item-action"
-                            data-toggle="list"
-                            href="#account-social-links"
-                        >
-                            Social links
-                        </a>
-                        <a
-                            className="list-group-item list-group-item-action"
-                            data-toggle="list"
-                            href="#account-connections"
-                        >
-                            Connections
-                        </a>
-                        <a
-                            className="list-group-item list-group-item-action"
-                            data-toggle="list"
-                            href="#account-notifications"
-                        >
-                            Notifications
-                        </a>
-                    </div>
-                </div>
+                <ProfileNavbar props="ChangePassword"/>
                 <div className="col-md-9">
                     <form className="p-5" onSubmit={updatePassword}>
                         <div class="form-row">
