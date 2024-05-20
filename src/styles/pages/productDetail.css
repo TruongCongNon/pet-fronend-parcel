@@ -82,7 +82,7 @@ text-decoration: none;
 
  .content-left-content i {
   font-size: 10px;
-  margin: 7px 2px 0 2px ;
+  margin: 2px 2px 0 2px ;
   color: rgb(168, 168, 7);
   cursor: pointer;
  }
@@ -252,7 +252,7 @@ text-decoration: none;
   text-align: center;
  }
  .content-left-handle-product-add p{
-  margin: 0;
+  margin: 4px;
  }
  .content-left-handle-product-add i {
   padding-top: 2px;
