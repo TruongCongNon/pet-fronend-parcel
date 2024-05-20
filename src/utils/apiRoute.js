@@ -15,7 +15,8 @@ export const API_ENDPOINTS = {
     GET_CURRENT_USER: `${API_BASE_URL}/user/get-user-token`
   },
   PRODUCT: {
-    BASE: "/product"
+    BASE: "/product",
+
   }
 };// nơi khai báo các enpoint route
 
