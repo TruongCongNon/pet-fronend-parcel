@@ -1,5 +1,3 @@
-// constants.js
-// const API_BASE_URL = "http://10.147.19.99:3000";
 const API_BASE_URL = "http://localhost:3000";
 
 export const API_ENDPOINTS = {
@@ -11,12 +9,17 @@ export const API_ENDPOINTS = {
     CHANGE_PASSWORD: `${API_BASE_URL}/auth/change-password`
   },
   USER: {
-    BASE: "/user",
+    BASE: `${API_BASE_URL}/user`,
     GET_CURRENT_USER: `${API_BASE_URL}/user/get-user-token`
   },
   PRODUCT: {
-    BASE: "/product",
-
+    BASE: `${API_BASE_URL}/product`
+  },
+  CATEGORY: {
+    BASE: `${API_BASE_URL}/category`
+  },
+  UPLOAD: {
+    AVATAR: `${API_BASE_URL}/uploads/avatar`
   }
 };// nơi khai báo các enpoint route
 

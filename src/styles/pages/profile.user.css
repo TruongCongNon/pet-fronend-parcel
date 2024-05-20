@@ -38,6 +38,13 @@ label.btn {
     color: #fff;
 }
 
+.image-uploader {
+    max-width: 25%;
+    width: 150px;
+    height: 150px!important;
+    object-fit: cover;
+}
+
 .btn-instagram {
     border-color: rgba(0, 0, 0, 0);
     background: #000;

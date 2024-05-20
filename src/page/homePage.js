@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/layout/footer.css";
 // khai báo css
-import "../styles/layout/index.css";
-import logoShop from "../assets/images/logo_cho_meo_web.png";
+import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import Slide1Img from "../assets/images/slides1.jpg"; // khai báo tài nguyên như ảnh, âm thanh ,....
 import Slide2Img from "../assets/images/slides2.jpg";
 import Slide3Img from "../assets/images/slides3.jpg";
-import pictureCard from "../assets/images/cart1.png";
-import { Link } from "react-router-dom"; // chuyển trang bằng tag <a href=""/> nhưng ở đây trang sẽ ko bị loading mà sẽ chuyển tthanwgr
+import "../styles/pages/main.css";
 import Header from "../components/header";
 import apiService from "../service/apiService";
+import "../styles/layout/index.css";
 import { API_ENDPOINTS } from "../utils/apiRoute";
 
 function HomePage() {
+  const history = useHistory();
   const [user, setUser] = useState({});
   const [products, setProducts] = useState([]);
 
@@ -29,13 +29,26 @@ function HomePage() {
     const getProductData = async () => {
       const response = await apiService.get(API_ENDPOINTS.PRODUCT.BASE);
       if (response.status >= 200 && response.status <= 299) {
-        setProducts(response.data);
+        const products = response.data;
+        let SplitProducts = [];
+        for (let i = 0; i < products.length; i += 3) {
+          SplitProducts.push(products.slice(i, i + 3));
+        }
+        console.log(SplitProducts);
+        setProducts(SplitProducts);
       }
     };
 
+    const unlisten = history.listen(() => {
+      getUserData();
+      getProductData();
+    });
     getUserData();
     getProductData();
-  });
+    return () => {
+      unlisten();
+    };
+  }, [history]);
 
   const getUserData = async () => {
     const token = localStorage.getItem("token");
@@ -99,7 +112,7 @@ function HomePage() {
             data-bs-slide="prev"
           >
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
+            <span class="visually-hidden"></span>
           </button>
           <button
             class="carousel-control-next"
@@ -108,49 +121,75 @@ function HomePage() {
             data-bs-slide="next"
           >
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
+            <span class="visually-hidden"></span>
           </button>
         </div>
 
         <div class="main">
-          <div class="main-left">
-            <div class="main-left-title">
-              <p>Lọc giá tiền</p>
-            </div>
-            <div class="filter-container">{/* filter condition */}</div>
-          </div>
-          <div class="main-right">
-            <div class="main-right-title">
-              <p>Product</p>
-            </div>
 
-            <div class="main-rigth-content">
-              {products.map((product) => (
-                <div class="card">
-                  <div class="card-view">
-                    <img class="card-img" src={product.images[0]} alt="" />
-                    <p class="card-price">{product.price}.000VND</p>
-                  </div>
-                  <div class="card-body">
-                    <h1 class="card-title">Mèo hoàng gia</h1>
-                    <p class="card-sub-title">Xuất xứ:{product.origin}</p>
-                    <p class="card-sub-title">Tuổi:{product.age}</p>
-                    <p class="card-sub-title mt-1">Giới tính:{product.gender == "MALE" ? "Giống đực" : "Giống cái"}</p>
+          <section class="pt-5 pb-5">
+            <div class="container">
+              <div class="row">
+                <div class="col-6">
+                  <h3 class="mb-3"><b>Top Products</b></h3>
+                </div>
+                <div class="col-6 text-right">
+                  <a class="btn btn-primary mb-3 mr-1"
+                    href="#carouselExampleIndicators2"
+                    role="button"
+                    data-slide="prev">
+                    <i class="fa fa-arrow-left"></i>
+                  </a>
+                  <a class="btn btn-primary mb-3"
+                    href="#carouselExampleIndicators2"
+                    role="button"
+                    data-slide="next">
+                    <i class="fa fa-arrow-right"></i>
+                  </a>
+                </div>
+                <div class="col-12">
+                  <div id="carouselExampleIndicators2"
+                    class="carousel slide"
+                    data-ride="carousel">
+                    <div class="carousel-inner">
+                      {/* data loading products */}
+                      {products.map((product, index) => (
 
-                    <div class="btn-cart-sale">
-                      <a href="./chi-tiet-san-pham.html">
-                        <button class="card-btn">Mua ngay</button>
-                      </a>
-                      <a href="">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                      </a>
+                        <div className={index == 0 ? "carousel-item active" : "carousel-item"} >
+                          <div className="row">
+                            {
+                              product.map((items) => (
+                                <div className="col-md-4 mb-3">
+                                  <Link to={`/product-detail?id=${items._id}`} style={{ color: "black" }}>
+                                    <div class="card">
+                                      <img class="img-fluid"
+                                        alt="100%x280"
+                                        src={items.images[0]}
+                                      />
+                                      <div class="card-body">
+                                        <h4 class="card-title" style={{ fontWeight: "bold" }}>{items.name}</h4>
+                                        <p class="card-text">Giá: {items.price}.000VND</p>
+                                        <p class="card-text mt-2">Giới tính: {items.gender == "FEMALE" ? "Con cái" : "Con đực"}</p>
+                                      </div>
+                                    </div>
+                                  </Link>
+
+                                </div>
+                              ))
+
+                            }
+                          </div>
+                        </div>
+
+                      ))}
                     </div>
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
-          </div>
-          .
+          </section>
+
+
         </div>
       </main>
       <footer>
