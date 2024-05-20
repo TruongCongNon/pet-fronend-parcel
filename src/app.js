@@ -6,6 +6,7 @@ import Register from "./page/register";
 import Otp from "./page/otp";
 import ProfileDetailPage from "./page/profile.user";
 import changePassword from "./page/changePassword";
+import ProductDetail from "./page/productDetail";
 
 function App() {
   return (
@@ -17,6 +18,9 @@ function App() {
         <Route path="/otp" component={Otp} />
         <Route path="/profile/detail" component={ProfileDetailPage} />
         <Route path="/profile/change-password" component={changePassword} />
+        <Route path="/profile/change-password" component={changePassword} />
+        <Route path="/product-detail" component={ProductDetail} />
+
       </Switch>
     </div>
   );
