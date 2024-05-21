@@ -108,6 +108,7 @@ function ProfileDetailPage() {
         <h4 className="font-weight-bold py-3 mb-4">Account settings</h4>
 
         <div className="row no-gutters row-bordered row-border-light">
+
           <ProfileNavbar props="General" />
           <div className="col-md-9">
             <form className="p-5" onSubmit={updateUser}>

@@ -10,6 +10,7 @@ function Header({ fullName }) {
         <div class="head">
           <div class="head-title">
             <div class="head-logo">
+
               <Link to="/"><img src={logoShop} alt="" /></Link>
             </div>
             <div class="head-search">
@@ -64,7 +65,24 @@ function Header({ fullName }) {
               </li>
             </ul>
           </div>
-
+          <div class="profile_account-cart">
+            <div class="profile_account">    
+            {fullName ? (
+                <>
+                  <Link>{fullName}</Link>
+                  <Link to="/profile/detail">Tài khoản của bạn </Link>
+                </>
+              ) : (
+                <Link to="./login">Đăng nhập</Link>
+              )}
+            </div>
+            <div class="cart">
+              <a href="./gio-hang.html">
+                <i class="fa-solid fa-cart-shopping"></i>
+              </a>
+              <p>0</p>
+            </div>
+          </div>
         </div>
       </header >
     </div >

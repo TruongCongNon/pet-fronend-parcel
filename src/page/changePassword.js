@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "../components/header";
 import apiService from "../service/apiService";
 import { API_ENDPOINTS } from "../utils/apiRoute";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import ProfileNavbar from "../components/profileNavBar";
 
 function changePassword() {
@@ -49,7 +50,6 @@ function changePassword() {
         <Header fullName={user.fullName} />
         <div className="container light-style flex-grow-1 container-p-y">
             <h4 className="font-weight-bold py-3 mb-4">Account settings</h4>
-
             <div className="row no-gutters row-bordered row-border-light">
                 <ProfileNavbar props="ChangePassword"/>
                 <div className="col-md-9">
