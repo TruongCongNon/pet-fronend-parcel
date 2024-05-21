@@ -9,12 +9,27 @@ function ProductDetail() {
     const [user, setUser] = useState({});
     const query = useLocation();
     const [product, setProduct] = useState({});
-    // const [categorys, setCategory] = useState([]);
+    const [quantity, setQuantity] = useState(1);
     const [productCategory, setProductCategory] = useState({});
+    const searchParams = new URLSearchParams(query.search);
+    const id = searchParams.get("id");
+
+
+    const addToCart = async () => {
+        const data = {
+            productId: id,
+            quantity: quantity
+        };
+        await apiService.post(API_ENDPOINTS.CART.ADD_TO_CART, data).then((response) => {
+            alert("Thêm vào giỏ hàng thành công");
+        }).catch((error) => {
+            alert("Failed");
+            console.log(error);
+        });
+    }
 
     useEffect(() => {
-        const searchParams = new URLSearchParams(query.search);
-        const id = searchParams.get("id");
+
         console.log(id);
         const getUserData = async () => {
             const token = localStorage.getItem("token");
@@ -102,18 +117,22 @@ function ProductDetail() {
                             <div class="content-left-quality">
                                 <p>Số lượng</p>
                                 <div class="content-left-quanlity-product">
-                                    <button id="plus-btn" onclick="handlePlus()"><i class="fa-solid fa-plus" ></i></button>
-                                    <input id="amount" type="text" value="1" />
-                                    <button id="minus-btn" onclick="handleMinus()"><i class="fa-solid fa-minus" ></i></button>
+                                    <button id="plus-btn" onclick={() => {setQuantity(quantity + 1); }}><i class="fa-solid fa-plus" ></i></button>
+                                    <input id="amount" type="text" value={quantity} onChange={(e) => { setQuantity(e.target.value) }} />
+                                    <button id="minus-btn" onClick={() => {
+                                        if (quantity == 0) { alert("Quantity không thể thấp hơn 0") } else {
+                                            setQuantity(quantity - 1);
+                                        }
+                                    }}><i class="fa-solid fa-minus" ></i></button>
                                 </div>
-                              
+
                             </div>
                             <div class="content-left-handle-product">
                                 <div class="content-left-handle-product-add">
-                                    <Link to={`/product-cart?id=${product._id}`}> <i class="fa-solid fa-cart-shopping"></i>
+                                    <button onClick={addToCart}>
+                                        <i class="fa-solid fa-cart-shopping"></i>
                                         <p>Thêm vào giỏ hàng</p>
-                                    </Link>
-                                    {/* <Link to={`/cart?id=${productId}`}>Go to Cart</Link> */}
+                                    </button>
                                 </div>
                                 <div class="content-left-handle-product-sale">
                                     <a href="">

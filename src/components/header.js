@@ -13,11 +13,11 @@ function Header({ fullName }) {
               <Link to="/"><img src={logoShop} alt="" /></Link>
             </div>
             <div class="head-search">
-              <div style={{width: "95%"}} className="head-search-input"><input type="text" style={{width:"95%"}} placeholder="Find the best for your pet..." /></div>
+              <div style={{ width: "95%" }} className="head-search-input"><input type="text" style={{ width: "95%" }} placeholder="Find the best for your pet..." /></div>
               <div >
                 <button class="btn-search">
-                <i class="fa-solid fa-magnifying-glass"></i>
-              </button>
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
               </div>
             </div>
             <div class="head-right">
@@ -41,10 +41,10 @@ function Header({ fullName }) {
                 )}
               </div>
               <div class="cart">
-                <a href="./gio-hang.html">
+                <Link to="/product-cart">
                   <i class="fa-solid fa-cart-shopping"></i>
-                </a>
-                <p>0</p>
+                  </Link>
+                {/* <p>0</p> */}
               </div>
             </div>
           </div>

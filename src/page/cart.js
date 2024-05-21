@@ -8,58 +8,40 @@ import "../styles/pages/cart.css";
 function ProductCart() {
     const history = useHistory();
     const [user, setUser] = useState({});
-    const [images, setImage] = useState(0);
-    const query = useLocation();
-    const [product, setProduct] = useState({});
-    const [quantity, setQuantity] = useState(1);
-     // Initialize quantity with 1
+    const [cart, setCart] = useState([]);
 
     useEffect(() => {
-        const searchParams = new URLSearchParams(query.search);
-        const id = searchParams.get("id");
 
         const getUserData = async () => {
             const token = localStorage.getItem("token");
             if (token) {
                 const response = await apiService.get(API_ENDPOINTS.USER.GET_CURRENT_USER);
                 setUser(response.data);
+                return response.data;
             }
+
         };
 
-        const getDetailProduct = async (id) => {
-            try {
-                const response = await apiService.get(`${API_ENDPOINTS.PRODUCT.BASE}/${id}`);
-                setProduct(response.data);
-            } catch (error) {
-                console.log("Failed to fetch product:", error);
-            }
-        };
+        const renderCartData = async () => {
+            const user = await getUserData();
+            const response = await apiService.get(`${API_ENDPOINTS.CART.BASE}?userId=${user._id}&populate=products.productId`);
+            const result = response.data[0].products;
+            setCart(result);
+        }
 
         getUserData();
-        getDetailProduct(id); // Fetch product details based on the id
+        renderCartData();
 
         const unlisten = history.listen(() => {
             getUserData();
-            getDetailProduct(id); // Fetch updated product details when navigating within the app
+            renderCartData();
         });
 
         return () => {
             unlisten();
         };
 
-    }, [history, query.search]);
-
-    const handlePlus = () => {
-        setQuantity(prevQuantity => prevQuantity + 1);
-    };
-
-    const handleMinus = () => {
-        if (quantity > 1) {
-            setQuantity(prevQuantity => prevQuantity - 1);
-        }
-    };
-
-    const totalPrice = parseInt(product.price) * quantity; // Convert to integer
+    }, [history]);
 
     return (
         <div>
@@ -83,25 +65,29 @@ function ProductCart() {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                {cart.map((items) => (<tr>
                                     <td className="img-cart"><input type="checkbox" className="checkbox-item" /></td>
-                                    <td className="img-cart"><img src={product.img}/></td>
-                                    <td>{product.name}</td>
-                                    <td className="cart-content">{product.price} VND</td>
+                                    <td className="img-cart"><img src={items.productId.images[0]} /></td>
+                                    <td>{items.productId.name}</td>
+                                    <td className="cart-content">{items.productId.price}.000 VND</td>
                                     <td className="cart-content">
                                         <div className="content-left-quanlity-product ">
-                                            <button id="plus-btn" onClick={handlePlus}><i className="fa-solid fa-plus"></i></button>
-                                            <input id="amount" className="input-cart" type="text" value={quantity} readOnly />
-                                            <button id="minus-btn" onClick={handleMinus}><i className="fa-solid fa-minus"></i></button>
+                                            <button id="plus-btn" ><i className="fa-solid fa-plus"></i></button>
+                                            <input id="amount" className="input-cart" type="text" value={items.quantity} readOnly />
+                                            <button id="minus-btn" ><i className="fa-solid fa-minus"></i></button>
                                         </div>
                                     </td>
-                                    <td className="cart-content">{totalPrice} VND</td>
+                                    <td className="cart-content">{items.productId.price * items.quantity}.000 VND</td>
                                     <td className="cart-content"><button>Xóa</button></td>
-                                </tr>
+                                </tr>))}
+
                             </tbody>
                         </table>
                     </div>
                 </div>
+            </div>
+            <div style={{display:"flex", justifyContent: "center"}}>
+                <button type="button" class="btn btn-primary">Thanh toán</button>
             </div>
         </div>
     );
