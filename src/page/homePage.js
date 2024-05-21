@@ -15,6 +15,8 @@ function HomePage() {
   const history = useHistory();
   const [user, setUser] = useState({});
   const [products, setProducts] = useState([]);
+  const [cats, setCats] = useState([]);
+  const [dogs, setDogs] = useState([]);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -34,35 +36,46 @@ function HomePage() {
         for (let i = 0; i < products.length; i += 3) {
           SplitProducts.push(products.slice(i, i + 3));
         }
-        console.log(SplitProducts);
         setProducts(SplitProducts);
       }
     };
 
+    const getSplitProductData = async () => {
+      const response = await apiService.get(`${API_ENDPOINTS.PRODUCT.BASE}?populate=categoryId`);
+      if (response.status >= 200 && response.status <= 299) {
+        const products = response.data;
+        let SplitCatProducts = [];
+        let SplitDogProducts = [];
+        let dogsProducts = response.data.filter((item) => item.categoryId && (item.categoryId).type == "DOG");
+        let catsProducts = response.data.filter((item) => item.categoryId && (item.categoryId).type == "CAT");
+
+        for (let i = 0; i < dogsProducts.length; i += 3) {
+          SplitDogProducts.push(dogsProducts.slice(i, i + 3));
+        }
+        setDogs(SplitDogProducts);
+        for (let i = 0; i < catsProducts.length; i += 3) {
+          SplitCatProducts.push(catsProducts.slice(i, i + 3));
+        }
+        setCats(SplitCatProducts);
+      }
+    };
+
+
+
     const unlisten = history.listen(() => {
       getUserData();
       getProductData();
+      getSplitProductData();
     });
     getUserData();
     getProductData();
+    getSplitProductData();
     return () => {
       unlisten();
     };
   }, [history]);
 
-  const getUserData = async () => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const response = await apiService.get(
-        API_ENDPOINTS.USER.GET_CURRENT_USER
-      );
-      if (response.status != 401) {
-        setUser(response.data);
-      } else {
-        console.log("token is null. Please login");
-      }
-    }
-  };
+
   return (
     <div>
       <Header fullName={user.fullName} />
@@ -154,6 +167,123 @@ function HomePage() {
                     <div class="carousel-inner">
                       {/* data loading products */}
                       {products.map((product, index) => (
+
+                        <div className={index == 0 ? "carousel-item active" : "carousel-item"} >
+                          <div className="row">
+                            {
+                              product.map((items) => (
+                                <div className="col-md-4 mb-3">
+                                  <Link to={`/product-detail?id=${items._id}`} style={{ color: "black" }}>
+                                    <div class="card">
+                                      <img class="img-fluid"
+                                        alt="100%x280"
+                                        src={items.images[0]}
+                                      />
+                                      <div class="card-body">
+                                        <h4 class="card-title" style={{ fontWeight: "bold" }}>{items.name}</h4>
+                                        <p class="card-text">Giá: {items.price}.000VND</p>
+                                        <p class="card-text mt-2">Giới tính: {items.gender == "FEMALE" ? "Con cái" : "Con đực"}</p>
+                                      </div>
+                                    </div>
+                                  </Link>
+
+                                </div>
+                              ))
+
+                            }
+                          </div>
+                        </div>
+
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-6">
+                  <h3 class="mb-3"><b>Mèo</b></h3>
+                </div>
+                <div class="col-6 text-right">
+                  <a class="btn btn-primary mb-3 mr-1"
+                    href="#carouselExampleIndicators3"
+                    role="button"
+                    data-slide="prev">
+                    <i class="fa fa-arrow-left"></i>
+                  </a>
+                  <a class="btn btn-primary mb-3"
+                    href="#carouselExampleIndicators3"
+                    role="button"
+                    data-slide="next">
+                    <i class="fa fa-arrow-right"></i>
+                  </a>
+                </div>
+                <div class="col-12">
+                  <div id="carouselExampleIndicators3"
+                    class="carousel slide"
+                    data-ride="carousel">
+                    <div class="carousel-inner">
+                      {/* data loading products */}
+                      {cats.map((product, index) => (
+
+                        <div className={index == 0 ? "carousel-item active" : "carousel-item"} >
+                          <div className="row">
+                            {
+                              product.map((items) => (
+                                <div className="col-md-4 mb-3">
+                                  <Link to={`/product-detail?id=${items._id}`} style={{ color: "black" }}>
+                                    <div class="card">
+                                      <img class="img-fluid"
+                                        alt="100%x280"
+                                        src={items.images[0]}
+                                      />
+                                      <div class="card-body">
+                                        <h4 class="card-title" style={{ fontWeight: "bold" }}>{items.name}</h4>
+                                        <p class="card-text">Giá: {items.price}.000VND</p>
+                                        <p class="card-text mt-2">Giới tính: {items.gender == "FEMALE" ? "Con cái" : "Con đực"}</p>
+                                      </div>
+                                    </div>
+                                  </Link>
+
+                                </div>
+                              ))
+
+                            }
+                          </div>
+                        </div>
+
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+
+              <div class="row">
+                <div class="col-6">
+                  <h3 class="mb-3"><b>Chó</b></h3>
+                </div>
+                <div class="col-6 text-right">
+                  <a class="btn btn-primary mb-3 mr-1"
+                    href="#carouselExampleIndicators4"
+                    role="button"
+                    data-slide="prev">
+                    <i class="fa fa-arrow-left"></i>
+                  </a>
+                  <a class="btn btn-primary mb-3"
+                    href="#carouselExampleIndicators4"
+                    role="button"
+                    data-slide="next">
+                    <i class="fa fa-arrow-right"></i>
+                  </a>
+                </div>
+                <div class="col-12">
+                  <div id="carouselExampleIndicators4"
+                    class="carousel slide"
+                    data-ride="carousel">
+                    <div class="carousel-inner">
+                      {/* data loading products */}
+                      {dogs.map((product, index) => (
 
                         <div className={index == 0 ? "carousel-item active" : "carousel-item"} >
                           <div className="row">
