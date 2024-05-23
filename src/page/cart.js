@@ -4,6 +4,7 @@ import { API_ENDPOINTS } from "../utils/apiRoute";
 import { useHistory, useLocation } from "react-router-dom";
 import Header from "../components/header";
 import "../styles/pages/cart.css";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 function ProductCart() {
     const history = useHistory();
@@ -101,6 +102,11 @@ function ProductCart() {
                             </tbody>
                         </table>
                     </div>
+                </div>
+                <div className="cart-btn">
+                    <button className="btn-continue">
+                       <Link to="/checkout"><p>Tiếp tục thanh toán </p></Link>
+                    </button>
                 </div>
             </div>
         </div>

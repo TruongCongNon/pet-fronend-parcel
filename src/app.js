@@ -8,6 +8,8 @@ import ProfileDetailPage from "./page/profile.user";
 import changePassword from "./page/changePassword";
 import ProductDetail from "./page/productDetail";
 import productCart from "./page/cart";
+import checkout from "./page/checkout";
+// import Checkout from "./page/checkout";
 
 function App() {
   return (
@@ -22,6 +24,7 @@ function App() {
         <Route path="/profile/change-password" component={changePassword} />
         <Route path="/product-detail" component={ProductDetail} />
         <Route path="/product-cart" component={productCart} />
+        <Route path="/checkout" component={checkout} />
       </Switch>
     </div>
   );
