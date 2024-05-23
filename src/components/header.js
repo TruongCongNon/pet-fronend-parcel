@@ -1,9 +1,14 @@
 import "../styles/layout/header.css";
 import logoShop from "../assets/images/logo_cho_meo_web.png"
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import React from "react";
 
 function Header({ fullName }) {
+  const history = useHistory();
+  const Logout = async () => {
+    localStorage.clear();
+    history.push("/login");
+  }
   return (
     <div>
       <header>
@@ -32,8 +37,9 @@ function Header({ fullName }) {
                 {fullName ? (
                   <>
                     <div className="profile-detail-user">
-                      <Link>{fullName}</Link>
+                      <div><p style={{color: "white"}}>{fullName}</p></div>
                       <Link to="/profile/detail">Tài khoản của bạn </Link>
+                      <button onClick={Logout}>Đăng xuất </button>
                     </div>
 
                   </>

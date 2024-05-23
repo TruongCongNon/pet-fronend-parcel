@@ -60,8 +60,6 @@ function HomePage() {
       }
     };
 
-
-
     const unlisten = history.listen(() => {
       getUserData();
       getProductData();
@@ -257,7 +255,7 @@ function HomePage() {
                   </div>
                 </div>
               </div>
-              
+
 
               <div class="row">
                 <div class="col-6">

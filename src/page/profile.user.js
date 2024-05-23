@@ -14,7 +14,6 @@ function ProfileDetailPage() {
   const [habbit, setHabbit] = useState([]);
   const [dogChecked, setDogChecked] = useState("false");
   const [catChecked, setCatChecked] = useState("false");
-
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
 
@@ -25,9 +24,6 @@ function ProfileDetailPage() {
   };
 
 
-
-
-
   useEffect(() => {
     const getUserData = async () => {
       const token = localStorage.getItem("token");
@@ -36,10 +32,6 @@ function ProfileDetailPage() {
           API_ENDPOINTS.USER.GET_CURRENT_USER
         );
         await setUser(response.data);
-
-        // await setUserName(response.data.userName);
-        // await setFullName(response.data.fullName);
-
         await setEmail(response.data.email);
         await setPhoneNumber(response.data.phoneNumber);
         await setHabbit(response.data.habbit);
