@@ -88,12 +88,9 @@ function ProductCart() {
                 </div>
                 <div className="cart-btn">
                     <button className="btn-continue">
-                       <Link to="/checkout"><p>Tiếp tục thanh toán </p></Link>
+                        <Link to="/checkout"><p>Tiếp tục thanh toán </p></Link>
                     </button>
                 </div>
-            </div>
-            <div style={{display:"flex", justifyContent: "center"}}>
-                <button type="button" class="btn btn-primary">Thanh toán</button>
             </div>
         </div>
     );
