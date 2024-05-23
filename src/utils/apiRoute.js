@@ -20,6 +20,13 @@ export const API_ENDPOINTS = {
   },
   UPLOAD: {
     AVATAR: `${API_BASE_URL}/uploads/avatar`
+  },
+  CART: {
+    BASE: `${API_BASE_URL}/cart`,
+    ADD_TO_CART: `${API_BASE_URL}/cart/add-to-cart`
+  },
+  FEEDBACK: {
+    BASE: `${API_BASE_URL}/feedback`,
   }
 };// nơi khai báo các enpoint route
 

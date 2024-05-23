@@ -9,12 +9,50 @@ function ProductDetail() {
     const [user, setUser] = useState({});
     const query = useLocation();
     const [product, setProduct] = useState({});
-    // const [categorys, setCategory] = useState([]);
+    const [quantity, setQuantity] = useState(1);
     const [productCategory, setProductCategory] = useState({});
+    const [feedbackDecription, setFeedbackDescription] = useState("");
+    const [feedback, setFeedback] = useState([]);
+    const searchParams = new URLSearchParams(query.search);
+    const id = searchParams.get("id");
+
+
+    const addToCart = async () => {
+        const data = {
+            productId: id,
+            quantity: quantity
+        };
+        await apiService.post(API_ENDPOINTS.CART.ADD_TO_CART, data).then((response) => {
+            alert("Thêm vào giỏ hàng thành công");
+        }).catch((error) => {
+            alert("Failed");
+            console.log(error);
+        });
+    }
+
+    const sendFeedBack = async (event) => {
+        event.preventDefault();
+        const data = {
+            userId: user._id,
+            productId: id,
+            description: feedbackDecription
+        };
+        await apiService.post(API_ENDPOINTS.FEEDBACK.BASE, data).then((response) => {
+            // alert("Send feedback thành công");
+        }).catch((error) => {
+            alert("Gửi feedback failed");
+        });
+        await apiService.get(`${API_ENDPOINTS.FEEDBACK.BASE}?productId=${id}&populate=userId`).then((response) => {
+            console.log(response.data);
+            setFeedback(response.data);
+        }).catch((error) => {
+            console.error(error);
+        })
+        setFeedbackDescription("");
+    }
 
     useEffect(() => {
-        const searchParams = new URLSearchParams(query.search);
-        const id = searchParams.get("id");
+
         console.log(id);
         const getUserData = async () => {
             const token = localStorage.getItem("token");
@@ -26,8 +64,15 @@ function ProductDetail() {
             }
         };
 
+        const getFeedback = async () => {
+            await apiService.get(`${API_ENDPOINTS.FEEDBACK.BASE}?productId=${id}&populate=userId`).then((response) => {
+                setFeedback(response.data);
+            }).catch((error) => {
+                console.error(error);
+            })
+        }
+
         const getDetailProduct = async (id) => {
-            console.log(`${API_ENDPOINTS.PRODUCT.BASE}/${id}`);
             const response = await apiService.get(`${API_ENDPOINTS.PRODUCT.BASE}/${id}`).then((data) => { setProduct(data.data); }).catch((error) => { alert("Failed"); console.log(error); })
         }
         const getCategory = async () => {
@@ -39,10 +84,13 @@ function ProductDetail() {
 
         }
         getCategory();
+        getFeedback();
 
         const unlisten = history.listen(() => {
             getUserData();
             getDetailProduct(id);
+            getCategory();
+            getFeedback();
         });
 
 
@@ -102,18 +150,22 @@ function ProductDetail() {
                             <div class="content-left-quality">
                                 <p>Số lượng</p>
                                 <div class="content-left-quanlity-product">
-                                    <button id="plus-btn" onclick="handlePlus()"><i class="fa-solid fa-plus" ></i></button>
-                                    <input id="amount" type="text" value="1" />
-                                    <button id="minus-btn" onclick="handleMinus()"><i class="fa-solid fa-minus" ></i></button>
+                                    <button id="plus-btn" onclick={() => { setQuantity(quantity + 1); }}><i class="fa-solid fa-plus" ></i></button>
+                                    <input id="amount" type="text" value={quantity} onChange={(e) => { setQuantity(e.target.value) }} />
+                                    <button id="minus-btn" onClick={() => {
+                                        if (quantity == 0) { alert("Quantity không thể thấp hơn 0") } else {
+                                            setQuantity(quantity - 1);
+                                        }
+                                    }}><i class="fa-solid fa-minus" ></i></button>
                                 </div>
-                              
+
                             </div>
                             <div class="content-left-handle-product">
                                 <div class="content-left-handle-product-add">
-                                    <Link to={`/product-cart?id=${product._id}`}> <i class="fa-solid fa-cart-shopping"></i>
+                                    <button onClick={addToCart}>
+                                        <i class="fa-solid fa-cart-shopping"></i>
                                         <p>Thêm vào giỏ hàng</p>
-                                    </Link>
-                                    {/* <Link to={`/cart?id=${productId}`}>Go to Cart</Link> */}
+                                    </button>
                                 </div>
                                 <div class="content-left-handle-product-sale">
                                     <a href="">
@@ -130,11 +182,7 @@ function ProductDetail() {
                                 <div class="details-content-bottom-category">
                                     <a href="">Shop pet</a>
                                     <i class="fa-solid fa-chevron-right"></i>
-                                    <Link to="">{productCategory.type == "DOG" ? "Chóa" : "Mòe"}</Link>
-                                    {/* {
-                                        categorys.map((category) => (
-                                            <Link to="">{category.type}</Link>))
-                                    } */}
+                                    <Link to="">{productCategory.type == "DOG" ? "Chó" : "Mèo"}</Link>
                                     <i class="fa-solid fa-chevron-right"></i>
                                     <a href="">{product.name}</a>
                                 </div>
@@ -147,6 +195,45 @@ function ProductDetail() {
                             <div class="content"><label for="">Mô tả </label>
                                 <div class="details-pet">{product.description}</div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="details-content-bottom">
+                        <p>Các đánh giá ({feedback.length}):</p>
+                        {
+                            feedback.length == 0 ? (<p className="pt-3 pb-3">không có đánh giá nào</p>) : feedback.map((items) => (
+                                <div class="pb-3 pt-3"><div class="card" style={{ width: "95%" }}>
+                                    <div class="card-header">
+
+                                    </div>
+                                    <div class="card-body">
+                                        <blockquote class="blockquote mb-0">
+                                            <p>{items.description}</p>
+                                            <footer class="blockquote-footer">{items.userId.fullName}</footer>
+                                        </blockquote>
+                                    </div>
+                                </div>
+                                </div>
+                            ))
+                        }
+
+
+
+
+                    </div>
+                    <div class="details-content-bottom pb-5">
+                        <p>Đánh giá sản phẩm:</p>
+
+                        <div class="details-content-bottom-product mt-1">
+                            <form class="row g-3" onSubmit={sendFeedBack}>
+
+                                <div class="col-md-10">
+                                    <label for="validationDefault02" class="form-label">Mô tả:</label>
+                                    <input type="text" class="form-control" id="validationDefault02" value={feedbackDecription}  onChange={(e) => { setFeedbackDescription(e.target.value) }} required />
+                                </div>
+                                <div class="col-12 mt-3">
+                                    <button class="btn btn-primary" type="submit"> Gửi đánh giá</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
