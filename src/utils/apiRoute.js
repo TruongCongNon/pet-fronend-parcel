@@ -27,6 +27,9 @@ export const API_ENDPOINTS = {
   },
   FEEDBACK: {
     BASE: `${API_BASE_URL}/feedback`,
+  },
+  BILL: {
+    BASE: `${API_BASE_URL}/bill`
   }
 };// nơi khai báo các enpoint route
 
