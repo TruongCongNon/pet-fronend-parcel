@@ -104,13 +104,13 @@ function ProfileDetailPage() {
           <ProfileNavbar props="General" />
           <div className="col-md-9">
             <form className="p-5" onSubmit={updateUser}>
-              <div class="input-group mb-3">
+              <div class="input-group change-avt mb-3">
                 <img class="img-thumbnail rounded-circle image-uploader" style={{ maxWidth: "25%" }} src={previewUrl ? previewUrl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"} />
-                <input type="file" class="form-control" id="inputGroupFile02" onChange={onFileChange} />
-                <label class="input-group-text" for="inputGroupFile02" onClick={handleUploadProfileImg}>Upload</label>
+                <div className="link-avt">
+                <input type="file" class="form-control link-avt-input" id="inputGroupFile02" onChange={onFileChange} />
+                <label class="input-group-text label-btn " for="inputGroupFile02" onClick={handleUploadProfileImg}>Upload</label>
+                </div>
               </div>
-
-
               <div class="form-row">
                 <div class="form-group col-md-11">
                   <label for="inputEmail4">Email</label>

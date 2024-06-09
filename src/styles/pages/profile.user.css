@@ -127,3 +127,27 @@ html:not(.dark-style) .account-settings-links .list-group-item.active {
 form {
     color: black;
 }
+.change-avt{
+display: block;
+flex-direction: row;
+
+}
+.img-thumbnail{
+    width:150px;
+    height: 150px;
+}
+.link-avt-input{
+margin: 60px 0 30px 50px;
+width: auto;
+line-height: 1 !important;
+padding: 0.379rem 0.75rem !important;
+}
+.label-btn{
+    height: 30px;
+    width: 100px;
+    margin-left: 50px;
+    background-color: blue;
+    text-align: center;
+    padding: 6px 12px 6px 20px !important;
+    cursor: pointer;
+}

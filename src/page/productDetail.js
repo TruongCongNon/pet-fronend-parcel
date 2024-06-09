@@ -3,7 +3,7 @@ import apiService from "../service/apiService";
 import { API_ENDPOINTS } from "../utils/apiRoute";
 import { Link, useHistory, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import Header from "../components/header";
-import "../styles/pages/ProductDetail.css";
+import "../styles/pages/productDetail.css";
 function ProductDetail() {
     const history = useHistory();
     const [user, setUser] = useState({});
@@ -162,7 +162,7 @@ function ProductDetail() {
                             </div>
                             <div class="content-left-handle-product">
                                 <div class="content-left-handle-product-add">
-                                    <button onClick={addToCart}>
+                                    <button class="btn-add" onClick={addToCart}>
                                         <i class="fa-solid fa-cart-shopping"></i>
                                         <p>Thêm vào giỏ hàng</p>
                                     </button>
